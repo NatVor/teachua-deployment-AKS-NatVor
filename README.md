@@ -5,4 +5,5 @@ For local application testing using Docker Compose, you need to clone the backen
      git clone https://github.com/DevOps-ProjectLevel/teachua-backend-NatVor.git
   2. Clone the frontend repository:
      git clone https://github.com/DevOps-ProjectLevel/teachua-frontend-NatVor.git
-     Ensure you have Docker Compose installed locally to orchestrate the deployment of both components of the application.
+
+Ensure you have Docker Compose installed locally to orchestrate the deployment of both components of the application.
