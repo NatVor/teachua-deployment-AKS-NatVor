@@ -8,3 +8,5 @@ For local application testing using Docker Compose, you need to clone the backen
   3. Apply the Docker Compose configuration to orchestrate the deploymen: docker-compose up
 
 This will initiate the deployment of both the backend and frontend components locally, based on the configurations defined in the docker-compose.yml file. 
+
+For production deployment, you'll need to follow next steps:  ....
