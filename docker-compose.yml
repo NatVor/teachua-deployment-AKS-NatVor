@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 version: '3.8'
 
-=======
->>>>>>> 61035f8aec56fdf935f8ae0bb4243ef378b043d8
 services:
   backend:
     build:
