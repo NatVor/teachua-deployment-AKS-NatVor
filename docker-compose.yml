@@ -43,11 +43,7 @@ services:
     ports:
       - "80:80"
     volumes:
-<<<<<<< HEAD
       - ./teachua-frontend-NatVor/nginx.conf:/etc/nginx/nginx.conf
-=======
-      - nginx.conf:/etc/nginx/nginx.conf
->>>>>>> 61035f8aec56fdf935f8ae0bb4243ef378b043d8
     depends_on:
       - backend
     restart: always
