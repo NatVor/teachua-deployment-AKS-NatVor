@@ -1,22 +1,20 @@
 name: Create Azure AKS With Terraform
-
 on:
   workflow_dispatch:
 
 permissions:
-  id-token: write
-  contents: read
-
-jobs:
+      id-token: write
+      contents: read
+jobs: 
   AKS-Cluster-Deployment:
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
         working-directory: AKS
-   # steps:
-   #  - name: Checkout
-   #    uses: actions/checkout@v3.1.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.1.0
 
       - name: Login to Azure
         uses: azure/login@v1
