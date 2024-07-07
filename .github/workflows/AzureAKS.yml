@@ -1,11 +1,13 @@
 name: Create Azure AKS With Terraform
+
 on:
   workflow_dispatch:
 
 permissions:
-      id-token: write
-      contents: read
-jobs: 
+  id-token: write
+  contents: read
+
+jobs:
   AKS-Cluster-Deployment:
     runs-on: ubuntu-latest
     defaults:
@@ -20,15 +22,7 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
-      #- name: 'Az CLI login'
-      #  uses: azure/login@v1
-      #  with:
-      #    client-id: ${{ secrets.AZURE_CLIENT_ID }}
-      #   client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-      #   tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-      #   subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.2
         with:
@@ -58,10 +52,11 @@ jobs:
       - name: Terraform Output
         run: terraform output
 
-      #- name: Deploy Application
-      #  run: |
-      #    az aks get-credentials -n "cluster-bursting-jennet" -g "rg-refined-swine"
-      #    kubectl apply -f ./AKSApp/aks-store-quickstart.yaml
-      #    sleep 40
-      #    kubectl get service store-front
-      #    rm -rf ~/.kube
+      # Якщо ви хочете додатково розгорнути додаток в AKS, розкоментуйте цей блок:
+      # - name: Deploy Application
+      #   run: |
+      #     az aks get-credentials -n "cluster-bursting-jennet" -g "rg-refined-swine"
+      #     kubectl apply -f ./AKSApp/aks-store-quickstart.yaml
+      #     sleep 40
+      #     kubectl get service store-front
+      #     rm -rf ~/.kube
