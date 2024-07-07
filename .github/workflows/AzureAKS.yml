@@ -21,6 +21,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Authenticate Azure CLI
+        run: az login
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.2
         with:
