@@ -43,10 +43,14 @@ variable "subscription_id" {
   description = "Subscription ID for Azure"
 }
 
-#variable "tenant_id" {
-# type    = string
-#  description = "Tenant ID for Azure"
-#}
+variable "tenant_id" {
+  type    = string
+  description = "Tenant ID for Azure"
+}
 
 variable "ssh_public_key" {
-  default = "~/.ssh/TeachVM_key.pub"
+#  default = "~/.ssh/TeachVM_key.pub"
+  default = ""
+}
+
+
