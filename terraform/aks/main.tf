@@ -34,7 +34,7 @@ service_principal {
 
   #subscription_id = var.subscription_id
   #tenant_id       = var.tenant_id
-#}
+  #}
 
   default_node_pool {
     name       = "agentpool"
@@ -45,9 +45,9 @@ service_principal {
   linux_profile {
     admin_username = "ubuntu"
 
-  ssh_key {
-    key_data = var.ssh_public_key
-  }
+  #ssh_key {
+  #  key_data = var.ssh_public_key
+  #}
 
   #ssh_key {
   #    key_data = azapi_resource_action.ssh_public_key_gen.output["publicKey"]
