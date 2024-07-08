@@ -36,11 +36,11 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   linux_profile {
     admin_username = "ubuntu"
 
-    ssh_key {
-      key_data = file(var.ssh_public_key)
+  ssh_key {
+      key_data = azapi_resource.ssh_public_key.properties.publicKey
     }
   }
-
+  
   network_profile {
     network_plugin    = "kubenet"
     load_balancer_sku = "standard"
