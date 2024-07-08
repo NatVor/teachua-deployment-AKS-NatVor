@@ -58,5 +58,5 @@ jobs:
           az aks get-credentials -n "teachua-deployment-AKS-NatVor" -g "resource-group"
           kubectl apply -f ./kubernetes/
           sleep 40
-          kubectl get service your-service-name
+          kubectl get service -o wide
           rm -rf ~/.kube
