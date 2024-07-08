@@ -48,5 +48,5 @@ variable "tenant_id" {
   description = "Tenant ID for Azure"
 }
 
-variable "ssh_public_key" {
-  default = "~/.ssh/TeachVM_key.pub"
+#variable "ssh_public_key" {
+# default = "~/.ssh/TeachVM_key.pub"
