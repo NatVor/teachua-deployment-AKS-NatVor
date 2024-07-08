@@ -3,7 +3,7 @@ provider "github" {
 }
 
 data "github_actions_secret" "ssh_public_key_secret" {
-  repository = "your/repository"
+  repository = "teachua-deployment-AKS-NatVor"
   secret_name = "SSH_PUBLIC_KEY"
 }
 
