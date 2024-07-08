@@ -53,11 +53,10 @@ jobs:
       - name: Terraform Output
         run: terraform output
 
-      # Якщо ви хочете додатково розгорнути додаток в AKS, розкоментуйте цей блок:
-      # - name: Deploy Application
-      #   run: |
-      #     az aks get-credentials -n "cluster-bursting-jennet" -g "rg-refined-swine"
-      #     kubectl apply -f ./AKSApp/aks-store-quickstart.yaml
-      #     sleep 40
-      #     kubectl get service store-front
-      #     rm -rf ~/.kube
+      - name: Deploy Application
+        run: |
+          az aks get-credentials -n "teachua-deployment-AKS-NatVor" -g "resource-group"
+          kubectl apply -f ./kubernetes/
+          sleep 40
+          kubectl get service your-service-name
+          rm -rf ~/.kube
