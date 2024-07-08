@@ -78,10 +78,10 @@ jobs:
           sleep 40
           kubectl get service -o wide
           rm -rf ~/.kube
-         id: get_rg_name
-       env:
-        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }} 
+       #  id: get_rg_name
+       #env:
+       # ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+       # ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+       # ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+       # ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }} 
           
