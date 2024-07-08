@@ -22,19 +22,19 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   resource_group_name = azurerm_resource_group.rg.name
   dns_prefix          = random_pet.azurerm_kubernetes_cluster_dns_prefix.id
 
+service_principal {
+  client_id     = var.client_id
+  client_secret = var.client_secret
+}
+
   #service_principal {
-  #  client_id     = var.client_id
-  #  client_secret = var.client_secret
+  # client_id       = jsondecode(secrets.AZURE_CREDENTIALS).clientId
+  #  client_secret   = jsondecode(secrets.AZURE_CREDENTIALS).clientSecret
   #}
 
-  service_principal {
-    client_id       = jsondecode(secrets.AZURE_CREDENTIALS).clientId
-    client_secret   = jsondecode(secrets.AZURE_CREDENTIALS).clientSecret
-  }
-
-  subscription_id = var.subscription_id
-  tenant_id       = var.tenant_id
-}
+  #subscription_id = var.subscription_id
+  #tenant_id       = var.tenant_id
+#}
 
   default_node_pool {
     name       = "agentpool"
