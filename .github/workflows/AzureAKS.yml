@@ -30,8 +30,26 @@ jobs:
           terraform_version: latest
           cli_config_credentials_token: ${{ secrets.TFC_TOKEN_ID }}
 
+      - name: Extract Azure Credentials
+        id: extract-credentials
+        run: |
+          echo "${{ secrets.AZURE_CREDENTIALS }}" > azure_credentials.json
+          CLIENT_ID=$(jq -r .clientId azure_credentials.json)
+          CLIENT_SECRET=$(jq -r .clientSecret azure_credentials.json)
+          TENANT_ID=$(jq -r .tenantId azure_credentials.json)
+          SUBSCRIPTION_ID=$(jq -r .subscriptionId azure_credentials.json)
+          echo "CLIENT_ID=$CLIENT_ID" >> $GITHUB_ENV
+          echo "CLIENT_SECRET=$CLIENT_SECRET" >> $GITHUB_ENV
+          echo "TENANT_ID=$TENANT_ID" >> $GITHUB_ENV
+          echo "SUBSCRIPTION_ID=$SUBSCRIPTION_ID" >> $GITHUB_ENV 
+
       - name: Terraform Init
         id: init
+        env:
+          ARM_CLIENT_ID: ${{ env.CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ env.CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ env.TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ env.SUBSCRIPTION_ID }}
         run: terraform init
       
       - name: Terraform Validate
@@ -55,8 +73,15 @@ jobs:
 
       - name: Deploy Application
         run: |
-          az aks get-credentials -n "teachua-deployment-AKS-NatVor" -g "resource-group"
+          az aks get-credentials -n "teachua-deployment-AKS-NatVor" -g "${{ steps.get_rg_name.outputs.resource_group_name }}"
           kubectl apply -f ./kubernetes/
           sleep 40
           kubectl get service -o wide
           rm -rf ~/.kube
+         id: get_rg_name
+       env:
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }} 
+          
