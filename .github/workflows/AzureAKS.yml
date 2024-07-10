@@ -52,13 +52,13 @@ jobs:
       - name: Terraform Output
         run: terraform output
 
-      - name: Deploy Application
-        run: |
-          az aks get-credentials -n "teachua-deployment-AKS-NatVor" -g "${{ steps.get_rg_name.outputs.resource_group_name }}"
-          kubectl apply -f ./kubernetes/
-          sleep 40
-          kubectl get service -o wide
-          rm -rf ~/.kube
+      #- name: Deploy Application
+      #  run: |
+      #    az aks get-credentials -n "teachua-deployment-AKS-NatVor" -g "${{ steps.get_rg_name.outputs.resource_group_name }}"
+      #   kubectl apply -f ./kubernetes/
+      #   sleep 40
+      #   kubectl get service -o wide
+      #   rm -rf ~/.kube
        #  id: get_rg_name
        #env:
        # ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
