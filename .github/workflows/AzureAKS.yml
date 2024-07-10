@@ -28,7 +28,7 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TFC_TOKEN_ID }}
 
       - name: Terraform Init
-        run: terraform init ./terraform/aks
+        run: terraform init -chdir=./terraform/aks
 
       - name: Terraform Validate
         run: terraform validate ./terraform/aks
