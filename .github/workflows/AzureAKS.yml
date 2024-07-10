@@ -1,5 +1,4 @@
-name: Azure AKS CI/CD
-
+name: Create AKS Cluster with Terraform
 on:
   push:
     branches:
@@ -8,10 +7,10 @@ on:
 
 permissions:
   id-token: write
-  contents: read 
+  contents: read
 
 jobs:
-  deploy-to-aks:
+  create-aks-cluster:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -21,47 +20,24 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: latest
           cli_config_credentials_token: ${{ secrets.TFC_TOKEN_ID }}
 
-      - name: Determine Cluster Action  # "create" or "deploy" based on conditions
-        id: determine_action
-        run: echo "::set-output name=action::deploy"
-
       - name: Terraform Init
-        if: steps.determine_action.outputs.action == 'create'
         run: terraform init terraform/aks
 
       - name: Terraform Validate
-        if: steps.determine_action.outputs.action == 'create'
         run: terraform validate terraform/aks
 
       - name: Terraform Plan
-        if: steps.determine_action.outputs.action == 'create'
         run: terraform plan terraform/aks
 
       - name: Terraform Apply
-        if: steps.determine_action.outputs.action == 'create'
         run: terraform apply -auto-approve terraform/aks
 
-       - name: Terraform Output
-         if: steps.determine_action.outputs.action == 'create'
-         run: terraform output 
-
-      - name: Get AKS Credentials
-        if: steps.determine_action.outputs.action == 'deploy'
-        run: az aks get-credentials --resource-group rg-rare-elf --name cluster-golden-cardinal
-
-      - name: Deploy Application
-        if: steps.determine_action.outputs.action == 'deploy'
-        run: |
-          kubectl apply -f ./kubernetes/
-          sleep 40
-          kubectl get service -o wide
-
-       - name: Clean Up Kube Config
-        run: rm -rf ~/.kube   
+      - name: Terraform Output
+        run: terraform output
