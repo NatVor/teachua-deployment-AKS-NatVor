@@ -33,6 +33,13 @@ jobs:
           terraform_version: latest
           cli_config_credentials_token: ${{ secrets.TFC_TOKEN_ID }}
 
+       - name: Create terraform.tfvars
+         run: |
+           echo "subscription_id = \"${{ secrets.SUBSCRIPTION_ID }}\"" > terraform.tfvars
+           echo "client_id       = \"${{ secrets.CLIENT_ID }}\"" >> terraform.tfvars
+           echo "client_secret   = \"${{ secrets.CLIENT_SECRET }}\"" >> terraform.tfvars
+           echo "tenant_id       = \"${{ secrets.TENANT_ID }}\"" >> terraform.tfvars   
+
       - name: Terraform Init
         id: init
         run: terraform init
