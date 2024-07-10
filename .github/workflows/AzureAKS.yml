@@ -16,7 +16,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: terraform/aks
+        working-directory: terraform
     
     steps:
       - name: Checkout repository
@@ -34,16 +34,16 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TFC_TOKEN_ID }}
 
       - name: Terraform Init
-        run: terraform init terraform/aks
+        run: terraform init terraform
 
       - name: Terraform Format
-        run: terraform fmt -check terraform/aks
+        run: terraform fmt -check terraform
 
       - name: Terraform Plan
-        run: terraform plan -input=false terraform/aks
+        run: terraform plan -input=false terraform
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve terraform/aks
+        run: terraform apply -auto-approve terraform
 
       - name: Terraform Output
-        run: terraform output terraform/aks
+        run: terraform output terraform
