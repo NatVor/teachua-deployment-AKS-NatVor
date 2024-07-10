@@ -1,17 +1,14 @@
-name: Create Azure AKS With Terraform
+name: Deploy Application to AKS
 on:
   workflow_dispatch:
 
 permissions:
-      id-token: write
-      contents: read
+  id-token: write
+  contents: read
+
 jobs: 
-  AKS-Cluster-Deployment:
+  Deploy-Application:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: terraform/aks
     steps:
       - name: Checkout
         uses: actions/checkout@v3.1.0
@@ -21,55 +18,14 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Authenticate Azure CLI
-        run: az login
+      - name: Get AKS Credentials
+        run: az aks get-credentials --resource-group rg-rare-elf --name cluster-golden-cardinal
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2.0.2
-        with:
-          terraform_version: latest
-          cli_config_credentials_token: ${{ secrets.TFC_TOKEN_ID }}
+      - name: Deploy to AKS
+        run: |
+          kubectl apply -f ./kubernetes/
+          sleep 40
+          kubectl get service -o wide
 
-      - name: Terraform Init
-        #working-directory: terraform
-        id: init
-        run: terraform init
-      
-      - name: Terraform Validate
-        #working-directory: terraform
-        id: validate
-        run: terraform validate
-
-      - name: Terraform Plan
-        #working-directory: terraform
-        id: plan
-        run: terraform plan
-        continue-on-error: true
-
-      - name: Terraform Plan Status
-        #working-directory: terraform
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
-
-      - name: Terraform Apply
-        #working-directory: terraform
-        run: terraform apply -auto-approve
-
-      - name: Terraform Output
-        #working-directory: terraform
-        run: terraform output
-
-      #- name: Deploy Application
-      #  run: |
-      #    az aks get-credentials -n "teachua-deployment-AKS-NatVor" -g "${{ steps.get_rg_name.outputs.resource_group_name }}"
-      #   kubectl apply -f ./kubernetes/
-      #   sleep 40
-      #   kubectl get service -o wide
-      #   rm -rf ~/.kube
-       #  id: get_rg_name
-       #env:
-       # ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-       # ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-       # ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-       # ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }} 
-          
+      - name: Clean Up Kube Config
+        run: rm -rf ~/.kube
