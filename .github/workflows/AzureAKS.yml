@@ -28,16 +28,16 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TFC_TOKEN_ID }}
 
       - name: Terraform Init
-        run: terraform init ./terraform/aks
+        run: terraform init ./terraform/aks/
 
       - name: Terraform Validate
-        run: terraform validate ./terraform/aks
+        run: terraform validate ./terraform/aks/
 
       - name: Terraform Plan
-        run: terraform plan ./terraform/aks
+        run: terraform plan ./terraform/aks/
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve ./terraform/aks
+        run: terraform apply -auto-approve ./terraform/aks/
 
       - name: Terraform Output
         run: terraform output
