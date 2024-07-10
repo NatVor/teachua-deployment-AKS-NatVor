@@ -36,7 +36,7 @@ default_node_pool {
 linux_profile {
   admin_username = "ubuntu"
   ssh_key {
-    key_data = var.ssh_public_key
+    key_data = "${{ secrets.SSH_PRIVATE_KEY }}"
   }
 }
 
