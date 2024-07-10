@@ -22,7 +22,27 @@ variable "username" {
   default     = "azureadmin"
 }
 
-variable "ssh_public_key" {
-  description = "The SSH public key to access the AKS nodes"
+#variable "ssh_public_key" {
+# description = "The SSH public key to access the AKS nodes"
+# type        = string
+#}
+
+variable "client_id" {
+  description = "Azure service principal client ID"
+  type        = string
+}
+
+variable "client_secret" {
+  description = "Azure service principal client secret"
+  type        = string
+}
+
+variable "subscription_id" {
+  description = "Azure subscription ID"
+  type        = string
+}
+
+variable "tenant_id" {
+  description = "Azure tenant ID"
   type        = string
 }
