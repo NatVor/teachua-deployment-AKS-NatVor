@@ -46,3 +46,8 @@ variable "tenant_id" {
   description = "Azure tenant ID"
   type        = string
 }
+
+variable "ssh_public_key" {
+  description = "SSH public key for the nodes"
+  type        = string
+}
