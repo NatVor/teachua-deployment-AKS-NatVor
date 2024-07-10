@@ -22,30 +22,20 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   resource_group_name = azurerm_resource_group.rg.name
   dns_prefix          = random_pet.azurerm_kubernetes_cluster_dns_prefix.id
 
-#service_principal {
-# client_id     = var.client_id
-# client_secret = var.client_secret
-#}
+service_principal {
+  client_id     = var.client_id
+  client_secret = var.client_secret
+ }
 
- #service_principal {
-# client_id       = jsondecode(secrets.AZURE_CREDENTIALS).clientId
- #   client_secret   = jsondecode(secrets.AZURE_CREDENTIALS).clientSecret
- #}
+default_node_pool {
+  name       = "agentpool"
+  vm_size    = "Standard_D2_v2"
+  node_count = var.node_count
+}
 
-  service_principal {
-    client_id     = data.azurerm_client_config.current.client_id
-    client_secret = data.azurerm_client_config.current.client_secret
-  }
-
-  default_node_pool {
-    name       = "agentpool"
-    vm_size    = "Standard_D2_v2"
-    node_count = var.node_count
-  }
-
-  linux_profile {
-    admin_username = "ubuntu"
-  }
+linux_profile {
+  admin_username = "ubuntu"
+}
 
   #ssh_key {
   #  key_data = var.ssh_public_key
@@ -56,8 +46,8 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   # }
   #}
   
-  network_profile {
-    network_plugin    = "kubenet"
-    load_balancer_sku = "standard"
+network_profile {
+  network_plugin    = "kubenet"
+  load_balancer_sku = "standard"
   }
 }
