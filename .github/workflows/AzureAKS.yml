@@ -38,7 +38,8 @@ jobs:
        #    echo "subscription_id = \"${{ secrets.SUBSCRIPTION_ID }}\"" > terraform.tfvars
        #   echo "client_id       = \"${{ secrets.CLIENT_ID }}\"" >> terraform.tfvars
        #   echo "client_secret   = \"${{ secrets.CLIENT_SECRET }}\"" >> terraform.tfvars
-       #   echo "tenant_id       = \"${{ secrets.TENANT_ID }}\"" >> terraform.tfvars   
+       #   echo "tenant_id       = \"${{ secrets.TENANT_ID }}\"" >> terraform.tfvars  
+       #   echo "ssh_public_key  = \"${{ secrets.SSH_PUBLIC_KEY }}\"" >> terraform.tfvars
 
       - name: Terraform Init
         id: init
