@@ -27,10 +27,15 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 # client_secret = var.client_secret
 #}
 
- service_principal {
-   client_id       = jsondecode(secrets.AZURE_CREDENTIALS).clientId
-    client_secret   = jsondecode(secrets.AZURE_CREDENTIALS).clientSecret
- }
+ #service_principal {
+# client_id       = jsondecode(secrets.AZURE_CREDENTIALS).clientId
+ #   client_secret   = jsondecode(secrets.AZURE_CREDENTIALS).clientSecret
+ #}
+
+  service_principal {
+    client_id     = data.azurerm_client_config.current.client_id
+    client_secret = data.azurerm_client_config.current.client_secret
+  }
 
   default_node_pool {
     name       = "agentpool"
