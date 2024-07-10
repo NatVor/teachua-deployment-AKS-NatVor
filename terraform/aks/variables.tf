@@ -21,3 +21,8 @@ variable "username" {
   description = "The admin username for the new cluster."
   default     = "azureadmin"
 }
+
+variable "ssh_public_key" {
+  description = "The SSH public key to access the AKS nodes"
+  type        = string
+}
