@@ -1,31 +1,63 @@
-name: Deploy Application to AKS
+name: Azure AKS CI/CD
+
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
-permissions:
-  id-token: write
-  contents: read
-
-jobs: 
-  Deploy-Application:
+jobs:
+  deploy-to-aks:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3.1.0
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: latest
+          cli_config_credentials_token: ${{ secrets.TFC_TOKEN_ID }}
+
+      - name: Determine Cluster Action  # "create" or "deploy" based on conditions
+        id: determine_action
+        run: echo "::set-output name=action::deploy"
+
+      - name: Terraform Init
+        if: steps.determine_action.outputs.action == 'create'
+        run: terraform init terraform/aks
+
+      - name: Terraform Validate
+        if: steps.determine_action.outputs.action == 'create'
+        run: terraform validate terraform/aks
+
+      - name: Terraform Plan
+        if: steps.determine_action.outputs.action == 'create'
+        run: terraform plan terraform/aks
+
+      - name: Terraform Apply
+        if: steps.determine_action.outputs.action == 'create'
+        run: terraform apply -auto-approve terraform/aks
+
+       - name: Terraform Output
+         if: steps.determine_action.outputs.action == 'create'
+         run: terraform output 
+
       - name: Get AKS Credentials
+        if: steps.determine_action.outputs.action == 'deploy'
         run: az aks get-credentials --resource-group rg-rare-elf --name cluster-golden-cardinal
 
-      - name: Deploy to AKS
+      - name: Deploy Application
+        if: steps.determine_action.outputs.action == 'deploy'
         run: |
           kubectl apply -f ./kubernetes/
           sleep 40
           kubectl get service -o wide
 
-      - name: Clean Up Kube Config
-        run: rm -rf ~/.kube
+       - name: Clean Up Kube Config
+        run: rm -rf ~/.kube   
