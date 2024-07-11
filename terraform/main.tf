@@ -46,4 +46,8 @@ network_profile {
   network_plugin    = "kubenet"
   load_balancer_sku = "standard"
   }
+
+identity {
+    type = "SystemAssigned"
+  }
 }
