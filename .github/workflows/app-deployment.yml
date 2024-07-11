@@ -31,6 +31,8 @@ jobs:
           kubectl apply -f ./kubernetes/
           sleep 40
           kubectl get service -o wide
+          kubectl get pods
+          kubectl get deployments   
 
       - name: Test Application Availability
         run: |
