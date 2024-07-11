@@ -3,10 +3,14 @@ resource "random_pet" "rg_name" {
   prefix = var.resource_group_name_prefix
 }
 
+data "azurerm_role_definition" "example" {
+  name = "Contributor"
+}
+
 resource "azurerm_role_assignment" "example" {
   scope              = azurerm_kubernetes_cluster.k8s.id
-  role_definition_id = "/subscriptions/${var.subscription_id}/providers/Microsoft.Authorization/roleDefinitions/${data.azurerm_role_definition.example.id}"
-  principal_id       = azurerm_ad_service_principal.example.id
+  role_definition_id = data.azurerm_role_definition.example.id
+  principal_id       = "62c87dff-9a4f-4d13-9ca3-da229ed0fc81"
 }
 
 resource "azurerm_resource_group" "rg" {
