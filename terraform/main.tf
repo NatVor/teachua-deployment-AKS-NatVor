@@ -45,7 +45,7 @@ network_profile {
   load_balancer_sku = "standard"
   }
 
-identity {
-    type = "SystemAssigned"
-  }
-}
+#identity {
+#   type = "SystemAssigned"
+# }
+#}
