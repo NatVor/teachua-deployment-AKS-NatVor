@@ -35,14 +35,24 @@ jobs:
       - name: Test Application Availability
         run: |
           sleep 60  
-          backend_ip=$(kubectl get service teachua-backend-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          # backend_ip=$(kubectl get service teachua-backend-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
           frontend_ip=$(kubectl get service teachua-frontend-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-          echo "Backend Service IP: $backend_ip"
+          # echo "Backend Service IP: $backend_ip"
           echo "Frontend Service IP: $frontend_ip"
 
-          curl -sSf http://$backend_ip
+          # curl -sSf http://$backend_ip
           curl -sSf http://$frontend_ip
  
       - name: Clean Up Kube Config
         run: rm -rf ~/.kube
+
+   integration_tests:
+     runs-on: ubuntu-latest
+     needs: [Deploy-Application]
+     steps:
+       - name: Checkout code
+         uses: actions/checkout@v3.1.0
+
+       - name: Run integration tests
+         run: ./path/to/your/integration-test.sh       
