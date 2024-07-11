@@ -3,6 +3,12 @@ resource "random_pet" "rg_name" {
   prefix = var.resource_group_name_prefix
 }
 
+resource "azurerm_role_assignment" "example" {
+  scope              = azurerm_kubernetes_cluster.k8s.id
+  role_definition_id = "/subscriptions/${var.subscription_id}/providers/Microsoft.Authorization/roleDefinitions/${data.azurerm_role_definition.example.id}"
+  principal_id       = azurerm_ad_service_principal.example.id
+}
+
 resource "azurerm_resource_group" "rg" {
   location = var.resource_group_location
   name     = random_pet.rg_name.id
