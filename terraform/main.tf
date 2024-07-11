@@ -35,11 +35,9 @@ default_node_pool {
 
 linux_profile {
   admin_username = var.username
-}
-
-ssh_key {
-      key_data = jsondecode(azapi_resource_action.ssh_public_key_gen.output).publicKey
-    }
+  ssh_key {
+    key_data = jsondecode(azapi_resource_action.ssh_public_key_gen.output).publicKey
+  }
 }
   
 network_profile {
