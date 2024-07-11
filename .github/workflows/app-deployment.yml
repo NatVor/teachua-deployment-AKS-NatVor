@@ -42,23 +42,25 @@ jobs:
           # curl -sSf http://$backend_ip
           # curl -sSf http://$frontend_ip
 
-      #- name: AKS Monitoring Enabler
-      # run: |
-      #   az aks get-credentials -n "cluster-golden-cardinal" -g "rg-rare-elf"
-      #   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-      #   helm repo add grafana https://grafana.github.io/helm-charts
-      #   helm repo update
-      #   helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
-      #   helm install grafana grafana/grafana --namespace monitoring --create-namespace --set adminPassword='YOUR_ADMIN_PASSWORD'
-      #   kubectl get svc -n monitoring > monitoring_services.txt
-      #   rm -rf ~/.kube
+      - name: AKS Monitoring Enabler
+        run: |
+          az aks get-credentials -n "cluster-golden-cardinal" -g "rg-rare-elf"
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo add grafana https://grafana.github.io/helm-charts
+          helm repo update
 
-      #- name: Upload Monitoring Services Result
-      # uses: actions/upload-artifact@v3
-      # with:
-      #   name: monitoring-services
-      #   path: monitoring_services.txt
+          # Assuming you have existing releases named 'prometheus' and 'grafana'
+          helm upgrade prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --reuse-values
+          helm upgrade grafana grafana/grafana --namespace monitoring --reuse-values --set adminPassword='YOUR_ADMIN_PASSWORD'
 
+          kubectl get svc -n monitoring > monitoring_services.txt
+          rm -rf ~/.kube
+
+      - name: Upload Monitoring Services Result
+        uses: actions/upload-artifact@v3
+        with:
+          name: monitoring-services
+          path: monitoring_services.txt
       #- name: Run SonarQube Inspection
       # uses: sonarsource/sonarqube-scan-action@v1.0.0
       # env:
@@ -75,6 +77,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3.1.0
+
+      - name: Set execute permissions for integration test script
+        run: chmod +x ./integration-test.sh
 
       - name: Run integration tests
         run: ./integration-test.sh
