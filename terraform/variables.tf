@@ -47,7 +47,13 @@ variable "tenant_id" {
   type        = string
 }
 
-variable "ssh_public_key" {
-  description = "SSH public key for the nodes"
+variable "msi_id" {
   type        = string
+  description = "The Managed Service Identity ID. If you're running this example using Managed Identity as the authentication method."
+  default     = null
 }
+
+#variable "ssh_public_key" {
+#  description = "SSH public key for the nodes"
+# type        = string
+#}
