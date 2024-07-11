@@ -23,10 +23,10 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   dns_prefix          = random_pet.azurerm_kubernetes_cluster_dns_prefix.id
 }
 
-service_principal {
-  client_id     = var.client_id
-  client_secret = var.client_secret
- }
+#service_principal {
+# client_id     = var.client_id
+# client_secret = var.client_secret
+#}
 
 default_node_pool {
   name       = "agentpool"
@@ -46,7 +46,7 @@ network_profile {
   load_balancer_sku = "standard"
   }
 
-#identity {
-#   type = "SystemAssigned"
-# }
-#}
+identity {
+   type = "SystemAssigned"
+ }
+}
