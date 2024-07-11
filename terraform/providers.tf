@@ -19,17 +19,25 @@ terraform {
       version = "0.9.1"
     }
   }
+ backend "remote" {
+		hostname = "app.terraform.io"
+		organization = "CloudQuickLabs"
+
+		workspaces {
+			name = "AzureAKSLabs"
+		}
+	}
 }
 
 provider "azurerm" {
   features {}
-  skip_provider_registration = true
+  #skip_provider_registration = true
 
-  client_id       = var.client_id
-  client_secret   = var.client_secret
-  subscription_id = var.subscription_id
-  tenant_id       = var.tenant_id
-}
+# client_id       = var.client_id
+# client_secret   = var.client_secret
+# subscription_id = var.subscription_id
+# tenant_id       = var.tenant_id
+#}
 
 #variable "client_id" {}
 #variable "client_secret" {}
