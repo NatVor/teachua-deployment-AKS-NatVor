@@ -1,0 +1,6 @@
+[submodule "teachua-frontend-NatVor"]
+	path = teachua-frontend-NatVor
+	url = git@github.com:DevOps-ProjectLevel/teachua-frontend-NatVor.git
+[submodule "teachua-backend-NatVor"]
+	path = teachua-backend-NatVor
+	url = git@github.com:DevOps-ProjectLevel/teachua-backend-NatVor.git
