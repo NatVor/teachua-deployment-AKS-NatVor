@@ -8,7 +8,7 @@ on:
 
 jobs:
   build_and_deploy:
-    name: Build and Deploy
+    name: Build, Test and Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -17,11 +17,28 @@ jobs:
 
       # Step to build the backend Docker image
       - name: Build Backend Docker image
-        run: docker build -t teachua-backend ./teachua-backend-NatVor
+        run: |
+          docker build -t teachua-backend ./teachua-backend-NatVor
+          docker run --rm teachua-backend mvn clean package
 
       # Step to build the frontend Docker image
       - name: Build Frontend Docker image
-        run: docker build -t teachua-frontend ./teachua-frontend-NatVor
+        run: |
+          docker build -t teachua-frontend ./teachua-frontend-NatVor
+
+      # Step to run unit tests
+      - name: Run unit tests
+        run: |
+          docker run --rm teachua-backend mvn test
+
+      # Step to run integration tests
+      - name: Run integration tests
+        run: |
+          docker run --rm \
+            -e DATASOURCE_URL=jdbc:mysql://mysql:3306/teachua_test?useUnicode=true&serverTimezone=UTC \
+            -e DATASOURCE_USER=root \
+            -e DATASOURCE_PASSWORD=root \
+            teachua-backend mvn integration-test
 
       # Step to login to GitHub Container Registry
       - name: Login to GitHub Container Registry
