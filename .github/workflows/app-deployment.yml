@@ -24,7 +24,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Get AKS Credentials
-        run: az aks get-credentials --resource-group rg-rare-elf --name cluster-golden-cardinal
+        run: az aks get-credentials --resource-group rg-subtle-woodcock --name cluster-superb-anemone
 
       - name: Deploy to AKS
         run: |
@@ -46,7 +46,7 @@ jobs:
 
       - name: AKS Monitoring Enabler
         run: |
-          az aks get-credentials -n "cluster-golden-cardinal" -g "rg-rare-elf"
+          az aks get-credentials -n "cluster-superb-anemone" -g "rg-subtle-woodcock"
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
           helm repo add grafana https://grafana.github.io/helm-charts
           helm repo update
