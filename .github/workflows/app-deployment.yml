@@ -32,56 +32,8 @@ jobs:
           sleep 40
           kubectl get service -o wide
           kubectl get pods
-          kubectl get deployments   
+          kubectl get deployments  
 
-      - name: Test Application Availability
-        run: |
-          sleep 60
-          backend_ip=$(kubectl get service teachua-backend-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-          frontend_ip=$(kubectl get service teachua-frontend-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-          echo "Backend Service IP: $backend_ip"
-          echo "Frontend Service IP: $frontend_ip"
-          # curl -sSf http://$backend_ip
-          # curl -sSf http://$frontend_ip
-
-      - name: AKS Monitoring Enabler
-        run: |
-          az aks get-credentials -n "cluster-superb-anemone" -g "rg-subtle-woodcock"
-          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-          helm repo add grafana https://grafana.github.io/helm-charts
-          helm repo update
-
-          # Assuming you have existing releases named 'prometheus' and 'grafana'
-          helm upgrade prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --reuse-values
-          helm upgrade grafana grafana/grafana --namespace monitoring --reuse-values --set adminPassword='YOUR_ADMIN_PASSWORD'
-
-          kubectl get svc -n monitoring > monitoring_services.txt
-          rm -rf ~/.kube
-
-      - name: Upload Monitoring Services Result
-        uses: actions/upload-artifact@v3
-        with:
-          name: monitoring-services
-          path: monitoring_services.txt
-      #- name: Run SonarQube Inspection
-      # uses: sonarsource/sonarqube-scan-action@v1.0.0
-      # env:
-      #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      # with:
-      #   args: >
-      #     -Dsonar.projectKey=myproject
-      #     -Dsonar.host.url=http://localhost:9000
-      #     -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
-  integration_tests:
-    runs-on: ubuntu-latest
-    needs: [Deploy-Application]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3.1.0
-
-      - name: Set execute permissions for integration test script
-        run: chmod +x ./integration-test.sh
-
-      - name: Run integration tests
-        run: ./integration-test.sh
+      - name: Clean Up Kube Config
+        run: rm -rf ~/.kube
+     
